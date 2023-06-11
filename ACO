@@ -1,0 +1,272 @@
+import numpy as np
+import random
+import time
+import matplotlib.pyplot as plt
+
+
+class ACO:
+    def __init__(self, num_ants, num_iterations, evaporation_rate, alpha, beta, q):
+        self.num_ants = num_ants
+        self.num_iterations = num_iterations
+        self.evaporation_rate = evaporation_rate
+        self.alpha = alpha
+        self.beta = beta
+        self.q = q
+
+    def calculate_distance(self, point1, point2):
+        return np.linalg.norm(point1 - point2)
+
+    def solve(self, locations, demand, capacity, num_vehicles):
+        num_cities = len(locations)
+        distance_matrix = np.zeros((num_cities, num_cities))
+        for i in range(num_cities):
+            for j in range(num_cities):
+                distance_matrix[i][j] = self.calculate_distance(locations[i], locations[j])
+
+        best_distance = float('inf')
+        best_solution = []
+
+        # Rest of the code for solving VRP
+        # Modify this section to implement the VRP solving algorithm
+
+        # Placeholder code to demonstrate the result
+        best_solution = [[] for _ in range(num_vehicles)]  # Separate routes for each vehicle
+        visited_locations = [[] for _ in range(num_vehicles)]  # Keep track of visited locations for each vehicle
+
+        for i in range(num_cities - 1):
+            assigned = False  # Flag to check if the location has been assigned to a vehicle
+
+            while not assigned:
+                vehicle = random.randint(0, num_vehicles - 1)  # Randomly select a vehicle
+
+                # Check if the location has already been visited by another vehicle
+                if i not in visited_locations[vehicle]:
+                    best_solution[vehicle].append(i)
+                    visited_locations[vehicle].append(i)
+                    assigned = True
+
+        # Complete the routes by adding the depot (0) as the start and end point for each vehicle
+        for vehicle in range(num_vehicles):
+            best_solution[vehicle] = [0] + best_solution[vehicle] + [0]
+
+        best_distance = np.sum(distance_matrix)
+
+        return best_solution, best_distance
+
+
+# Define locations and demand
+locations = np.array([(714187.08,3838925.34),
+(714187.08,3838935.34),
+(714197.08,3838935.34),
+(714207.08,3838935.34),
+(714217.08,3838935.34),
+(714227.08,3838935.34),
+(714237.08,3838935.34),
+(714247.08,3838935.34),
+(714257.08,3838935.34),
+(714267.08,3838935.34),
+(714277.08,3838935.34),
+(714287.08,3838935.34),
+(714297.08,3838935.34),
+(714307.08,3838935.34),
+(714187.08,3838945.34),
+(714197.08,3838945.34),
+(714207.08,3838945.34),
+(714217.08,3838945.34),
+(714227.08,3838945.34),
+(714237.08,3838945.34),
+(714247.08,3838945.34),
+(714257.08,3838945.34),
+(714267.08,3838945.34),
+(714277.08,3838945.34),
+(714287.08,3838945.34),
+(714297.08,3838945.34),
+(714307.08,3838945.34),
+(714187.08,3838955.34),
+(714197.08,3838955.34),
+(714207.08,3838955.34),
+(714217.08,3838955.34),
+(714227.08,3838955.34),
+(714237.08,3838955.34),
+(714247.08,3838955.34),
+(714257.08,3838955.34),
+(714267.08,3838955.34),
+(714277.08,3838955.34),
+(714287.08,3838955.34),
+(714297.08,3838955.34),
+(714307.08,3838955.34),
+(714187.08,3838965.34),
+(714197.08,3838965.34),
+(714207.08,3838965.34),
+(714217.08,3838965.34),
+(714227.08,3838965.34),
+(714237.08,3838965.34),
+(714247.08,3838965.34),
+(714257.08,3838965.34),
+(714267.08,3838965.34),
+(714277.08,3838965.34),
+(714287.08,3838965.34),
+(714297.08,3838965.34),
+(714307.08,3838965.34),
+(714187.08,3838975.34),
+(714197.08,3838975.34),
+(714207.08,3838975.34),
+(714217.08,3838975.34),
+(714227.08,3838975.34),
+(714237.08,3838975.34),
+(714247.08,3838975.34),
+(714257.08,3838975.34),
+(714267.08,3838975.34),
+(714277.08,3838975.34),
+(714287.08,3838975.34),
+(714297.08,3838975.34),
+(714307.08,3838975.34),
+(714187.08,3838985.34),
+(714197.08,3838985.34),
+(714207.08,3838985.34),
+(714217.08,3838985.34),
+(714227.08,3838985.34),
+(714237.08,3838985.34),
+(714247.08,3838985.34),
+(714257.08,3838985.34),
+(714267.08,3838985.34),
+(714277.08,3838985.34),
+(714287.08,3838985.34),
+(714297.08,3838985.34),
+(714307.08,3838985.34),
+(714187.08,3838995.34),
+(714197.08,3838995.34),
+(714207.08,3838995.34),
+(714217.08,3838995.34),
+(714227.08,3838995.34),
+(714237.08,3838995.34),
+(714247.08,3838995.34),
+(714257.08,3838995.34),
+(714267.08,3838995.34),
+(714277.08,3838995.34),
+(714287.08,3838995.34),
+(714297.08,3838995.34),
+(714307.08,3838995.34),
+(714187.08,3839005.34),
+(714197.08,3839005.34),
+(714207.08,3839005.34),
+(714217.08,3839005.34),
+(714227.08,3839005.34),
+(714237.08,3839005.34),
+(714247.08,3839005.34),
+(714257.08,3839005.34),
+(714267.08,3839005.34),
+(714277.08,3839005.34),
+(714287.08,3839005.34),
+(714297.08,3839005.34),
+(714307.08,3839005.34),
+(714187.08,3839015.34),
+(714197.08,3839015.34),
+(714207.08,3839015.34),
+(714217.08,3839015.34),
+(714227.08,3839015.34),
+(714237.08,3839015.34),
+(714247.08,3839015.34),
+(714257.08,3839015.34),
+(714267.08,3839015.34),
+(714277.08,3839015.34),
+(714287.08,3839015.34),
+(714297.08,3839015.34),
+(714307.08,3839015.34),
+(714187.08,3839025.34),
+(714197.08,3839025.34),
+(714207.08,3839025.34),
+(714217.08,3839025.34),
+(714227.08,3839025.34),
+(714237.08,3839025.34),
+(714247.08,3839025.34),
+(714257.08,3839025.34),
+(714267.08,3839025.34),
+(714277.08,3839025.34),
+(714287.08,3839025.34),
+(714297.08,3839025.34),
+(714307.08,3839025.34),
+(714187.08,3839035.34),
+(714197.08,3839035.34),
+(714207.08,3839035.34),
+(714217.08,3839035.34),
+(714227.08,3839035.34),
+(714237.08,3839035.34),
+(714247.08,3839035.34),
+(714257.08,3839035.34),
+(714267.08,3839035.34),
+(714277.08,3839035.34),
+(714287.08,3839035.34),
+(714297.08,3839035.34),
+(714307.08,3839035.34),
+(714187.08,3839045.34),
+(714197.08,3839045.34),
+(714207.08,3839045.34),
+(714217.08,3839045.34),
+(714227.08,3839045.34),
+(714237.08,3839045.34),
+(714247.08,3839045.34),
+(714257.08,3839045.34),
+(714267.08,3839045.34),
+(714277.08,3839045.34),
+(714287.08,3839045.34),
+(714297.08,3839045.34),
+(714307.08,3839045.34)
+])
+
+# Define demand
+demand = np.random.randint(1, 10, size=len(locations))
+
+# Define num_vehicles
+num_vehicles = 10
+
+# Calculate the capacity per vehicle
+capacity = sum(demand) // num_vehicles
+
+# Define ACO parameters
+num_ants = 10
+num_iterations = 100
+evaporation_rate = 0.5
+alpha = 1.0
+beta = 2.0
+q = 100.0
+
+# Create ACO instance and solve VRP
+aco = ACO(num_ants, num_iterations, evaporation_rate, alpha, beta, q)
+start_time = time.time()
+best_solution, best_distance = aco.solve(locations, demand, capacity, num_vehicles)
+end_time = time.time()
+runtime = end_time - start_time
+
+# Print the best solution, distance, and runtime
+print("Best Solution:")
+for i, route in enumerate(best_solution):
+    print(f"Route for Vehicle {i+1}: {route}")
+print("Best Distance:", best_distance)
+print("Runtime:", runtime, "seconds")
+
+# Plotting the routes
+plt.figure(figsize=(8, 6))
+
+# Plotting the routes
+plt.figure(figsize=(8, 6))
+
+# Plot depot as a black triangle
+plt.scatter(locations[0, 0], locations[0, 1], color='black', marker='^', s=100, label='Depot')
+
+for i, route in enumerate(best_solution):
+    x = [locations[j][0] for j in route]
+    y = [locations[j][1] for j in route]
+    plt.plot(x, y, marker='o', label=f'Route for Vehicle {i+1}')
+
+#plt.scatter(locations[1:, 0], locations[1:, 1], color='red')
+plt.legend()
+plt.title('Vehicle Routing Problem')
+plt.xlabel('X Coordinate')
+plt.ylabel('Y Coordinate')
+plt.grid(True)
+
+# Add runtime annotation
+plt.text(0.0, 0.04, f"Runtime: {runtime:.4f} seconds", transform=plt.gca().transAxes, fontsize=10, verticalalignment='top')
+
+plt.show()
